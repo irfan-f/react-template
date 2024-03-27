@@ -1,0 +1,15 @@
+{
+  "name": "mahjong",
+  "private": true,
+  "version": "0.0.1",
+  "description": "A simple mahjong game",
+  "workspaces": [
+    "packages/web",
+    "packages/mobile",
+    "packages/shared",
+    "packages/emulators"
+  ],
+  "scripts": {
+    "start:web": "npm run --prefix packages/web start"
+  }
+}
