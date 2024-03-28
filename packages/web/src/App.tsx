@@ -1,9 +1,6 @@
+import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-
-import { strings } from '@mahjong/shared';
-
-const { title } = strings;
 
 function App() {
   return (
@@ -19,7 +16,7 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          {title}
+          Learn React
         </a>
       </header>
     </div>

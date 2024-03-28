@@ -10,6 +10,7 @@
     "packages/emulators"
   ],
   "scripts": {
-    "start:web": "npm run --prefix packages/web start"
+    "start:web": "npm run --prefix packages/web start",
+    "clean:all": "rm -rf packages/*/node_modules node_modules packages/*/package-lock.json package-lock.json"
   }
 }
