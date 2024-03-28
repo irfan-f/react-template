@@ -6,7 +6,7 @@
  */
 
 import React from 'react';
-import type {PropsWithChildren} from 'react';
+import type { PropsWithChildren } from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -15,22 +15,27 @@ import {
   Text,
   useColorScheme,
   View,
+  Appearance,
 } from 'react-native';
 
 import {
   Colors,
   DebugInstructions,
-  Header,
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+
+import Header from './components/Header';
+
+import { strings } from '@mahjong/shared';
+const { title: abc } = strings;
 
 type SectionProps = PropsWithChildren<{
   title: string;
 }>;
 
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+function Section({ children, title }: SectionProps): React.JSX.Element {
+  const isDarkMode = Appearance.getColorScheme() === 'dark';
   return (
     <View style={styles.sectionContainer}>
       <Text

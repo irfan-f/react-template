@@ -11,6 +11,9 @@
   ],
   "scripts": {
     "start:web": "npm run --prefix packages/web start",
+    "start:mobile": "npm run --prefix packages/mobile start",
+    "start:ios": "npm run --prefix packages/mobile ios",
+    "start:android": "npm run --prefix packages/mobile android",
     "clean:all": "rm -rf packages/*/node_modules node_modules packages/*/package-lock.json package-lock.json"
   }
 }
