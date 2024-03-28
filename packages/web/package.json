@@ -2,9 +2,6 @@
   "name": "web",
   "version": "0.1.0",
   "private": true,
-  "resolutions": {
-    "react-refresh": "^0.14.0"
-  },
   "dependencies": {
     "@mahjong/shared": "^1.0.0",
     "@testing-library/jest-dom": "^5.17.0",
@@ -21,9 +18,9 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -45,6 +42,8 @@
     ]
   },
   "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "customize-cra": "^1.0.0",
+    "react-app-rewired": "^2.2.1"
   }
 }
