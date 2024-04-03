@@ -15,5 +15,11 @@
     "start:ios": "npm run --prefix packages/mobile ios",
     "start:android": "npm run --prefix packages/mobile android",
     "clean:all": "rm -rf packages/*/node_modules node_modules packages/*/package-lock.json package-lock.json"
+  },
+  "dependencies": {
+    "tinycolor2": "^1.6.0"
+  },
+  "devDependencies": {
+    "@types/tinycolor2": "^1.4.6"
   }
 }

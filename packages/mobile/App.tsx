@@ -1,90 +1,74 @@
-/**
- * Main entry point for the mobile app.
- * This file is the first file that gets executed when the app starts.
- * It is responsible for rendering the main component of the app.
- * The main component is the `Wrapper` component.
- * The `Wrapper` component is responsible for rendering the main navigation component of the app.
- */
-
-import React, { useEffect, useState } from 'react';
+import React, { Ref } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import {
-  SafeAreaView,
-  StatusBar,
-  StatusBarStyle,
-  useColorScheme,
-  StyleSheet,
-  View,
-} from 'react-native';
-
+import { SafeAreaView, StatusBar, useColorScheme, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import Home from './components/pages/Home';
-import Profile from './components/pages/Profile';
-import Game from './components/pages/Game';
-import Scoreboard from './components/pages/Scoreboard';
-import Footer from './components/basic/Footer';
+import Home from './components/pages/home';
+import Profile from './components/pages/profile';
+import Game from './components/pages/game';
+import Footer from './components/basic/footer';
 
-import colors from './styles/colors';
+import { styles, colors, theme, toggleTheme } from './styles';
 
 const Stack = createNativeStackNavigator();
 
+const initialStack = 'Home';
+
+const stacks = [
+  {
+    name: 'Game',
+    component: Game,
+  },
+  {
+    name: 'Home',
+    component: Home,
+  },
+  {
+    name: 'Profile',
+    component: Profile,
+  },
+];
+
 function App(): React.JSX.Element {
-  const colorScheme = useColorScheme();
-  const navigationRef = React.useRef(null);
+  const navigationRef: Ref<typeof NavigationContainer | null> =
+    React.useRef(null);
+  const colorScheme = useColorScheme() || 'light';
+  if (colorScheme !== theme) {
+    toggleTheme();
+  }
 
   return (
     <SafeAreaProvider>
-      <SafeAreaView
-        style={[
-          styles.container,
-          { backgroundColor: colors.backgroundColors[colorScheme as string] },
-        ]}>
+      <SafeAreaView style={styles.topContainer}>
         <StatusBar
-          barStyle={colors.barStyles[colorScheme as string]}
-          backgroundColor={colors.backgroundColors[colorScheme as string]}
+          barStyle={colors.barStyle}
+          backgroundColor={colors.background}
         />
         <View style={styles.navContainer}>
           <NavigationContainer ref={navigationRef}>
-            <Stack.Navigator>
-              <Stack.Screen
-                name="Home"
-                component={Home}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="Game"
-                component={Game}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="Profile"
-                component={Profile}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="Scoreboard"
-                component={Scoreboard}
-                options={{ headerShown: false }}
-              />
+            <Stack.Navigator initialRouteName={initialStack}>
+              {/* Loop through the stacks and create a screen for each stack */}
+              {stacks.map(stack => (
+                <Stack.Screen
+                  key={stack.name}
+                  name={stack.name}
+                  component={stack.component}
+                  options={{ headerShown: false }}
+                />
+              ))}
             </Stack.Navigator>
           </NavigationContainer>
         </View>
-        <Footer navigationRef={navigationRef} />
+        <Footer
+          navigationRef={navigationRef}
+          stacks={stacks}
+          initialStack={initialStack}
+        />
       </SafeAreaView>
     </SafeAreaProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  navContainer: {
-    flex: 1,
-  },
-});
 
 export default App;
