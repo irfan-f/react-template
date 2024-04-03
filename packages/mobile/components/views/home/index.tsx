@@ -4,10 +4,6 @@ import { styles } from '../../../styles';
 import { ScrollView, Text, View } from 'react-native';
 
 function HomeView(): React.JSX.Element {
-  // Element should rerender if styles change
-  useEffect(() => {
-    console.log('HomeView rendered');
-  });
   return (
     <ScrollView style={styles.scrollContainer}>
       <View style={styles.textContainer}>
