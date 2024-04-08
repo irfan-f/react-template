@@ -9,7 +9,9 @@ import NavigationButton from '../navigationButton';
 import { FooterProps } from './types';
 
 // Styles
-import { colors, styles } from '../../../styles';
+import { useSelector } from 'react-redux';
+import { Store } from '@mahjong/shared';
+const { selectors } = Store;
 
 // Component
 function Footer({
@@ -17,6 +19,8 @@ function Footer({
   stacks,
   initialStack,
 }: FooterProps): React.JSX.Element {
+  const theme = useSelector(selectors.selectTheme);
+  const { styles, colors } = theme;
   const insets = useSafeAreaInsets();
 
   return (
@@ -32,21 +36,23 @@ function Footer({
         },
       ]}>
       {/* Loop through the stacks and create a screen for each stack */}
-      {stacks.map((stack, index) => (
-        <NavigationButton
-          key={stack.name}
-          title={stack.name}
-          destination={stack.name}
-          navigationRef={navigationRef}
-          totalStacks={stacks.length}
-          options={{
-            border: index === stacks.length - 1 && false,
-            onPress: true,
-            testID: stack.name,
-            initialState: stack.name === initialStack ? 'active' : 'enabled',
-          }}
-        />
-      ))}
+      {stacks.map((stack, index) => {
+        return (
+          <NavigationButton
+            key={stack.name}
+            title={stack.name}
+            destination={stack.name}
+            navigationRef={navigationRef}
+            totalStacks={stacks.length}
+            options={{
+              border: index !== stacks.length - 1,
+              onPress: true,
+              testID: stack.name,
+              initialState: stack.name === initialStack ? 'active' : 'enabled',
+            }}
+          />
+        );
+      })}
     </View>
   );
 }

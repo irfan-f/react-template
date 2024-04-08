@@ -17,6 +17,7 @@ const config = {
       'react-native': path.resolve(__dirname, 'node_modules/react-native'),
     },
   },
+  resetCache: true,
 };
 
 module.exports = mergeConfig(getDefaultConfig(__dirname), config);

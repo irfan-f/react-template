@@ -2,7 +2,11 @@ export type ButtonProps = {
   /**
    * The title of the button.
    */
-  title: string;
+  title?: string;
+  /**
+   * The icon of the button.
+   */
+  icon?: string;
   /**
    * The onPress function of the button.
    */
@@ -27,6 +31,12 @@ export type ButtonProps = {
    * Options are 'none', 'full', or an array containing one or several of 'Left', 'Right', 'Top', and 'Bottom'.
    */
   border?: 'none' | 'full' | ('Left' | 'Right' | 'Top' | 'Bottom')[];
+  /**
+   * The fill of the button.
+   * Default is 'solid'.
+   * Options are 'solid', 'outline', or 'clear'.
+   */
+  fill?: 'solid' | 'outline' | 'clear';
   /**
    * State of the button.
    * Default is 'enabled'.

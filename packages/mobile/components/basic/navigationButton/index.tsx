@@ -1,12 +1,14 @@
 import { Pressable, Text } from 'react-native';
 
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { Store } from '@mahjong/shared';
+const { selectors } = Store;
 
 // Types
 import { NavigationButtonProps } from './types';
 
 // Styles
-import { colors, styles } from '../../../styles';
 
 // Helpers
 function getButtonState(
@@ -37,6 +39,8 @@ function NavigationButton({
     initialState,
   },
 }: NavigationButtonProps): React.JSX.Element {
+  const theme = useSelector(selectors.selectTheme);
+  const { colors, styles } = theme;
   const [buttonState, setButtonState] = useState(initialState || 'enabled');
 
   useEffect(() => {

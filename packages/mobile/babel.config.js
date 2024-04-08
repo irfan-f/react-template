@@ -6,6 +6,7 @@ module.exports = {
       "alias": {
         "*": ["./node_modules/*", "../../node_modules/*"]
       }
-    }]
+    }],
+    'react-native-reanimated/plugin'
   ]
 };

@@ -1,15 +1,19 @@
-import React, { useEffect } from 'react';
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { Store } from '@mahjong/shared';
+const { selectors } = Store;
 
-import { styles } from '../../../styles';
 import { ScrollView, Text, View } from 'react-native';
 
 function HomeView(): React.JSX.Element {
+  const theme = useSelector(selectors.selectTheme);
+  const { styles } = theme;
   return (
-    <ScrollView style={styles.scrollContainer}>
+    <ScrollView style={[styles.scrollContainer]}>
       <View style={styles.textContainer}>
-        <Text style={[styles.h1, styles.padding]}>Header 1</Text>
+        <Text style={[styles.h1]}>Header 1</Text>
         <Text style={[styles.h2, styles.textRight]}>Header 2</Text>
-        <Text style={[styles.h3, styles.padding, styles.textLeft]}>
+        <Text style={[styles.h3, styles.paddingW, styles.textLeft]}>
           Header 3
         </Text>
         <Text style={[styles.body, styles.textPadding, styles.textLeft]}>
