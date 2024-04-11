@@ -5,6 +5,7 @@
     "paths": {
       "*": ["../../node_modules/*", "*"]
     },
+    "typeRoots": ["../../node_modules/@types", "./types"],
     // other compiler options...
   },
   "include": ["src"],
