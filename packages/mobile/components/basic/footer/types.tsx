@@ -12,6 +12,6 @@ export type FooterProps = {
    */
   stacks: {
     name: string;
-    component: React.FC;
+    id: string;
   }[];
 };

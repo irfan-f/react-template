@@ -1,8 +1,9 @@
 // themeSlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { defaultColors, setColors, defaultStyles, setStyles } from '../../content/styles/index'; // import your colors
-import type { Colors, Styles } from '../../content/styles/index'; // import your colors
 import { Appearance } from 'react-native';
+
+import { defaultColors, setColors, defaultStyles, setStyles } from '../../../info/styles';
+import type { Colors, Styles } from '../../../info/styles'; // import your colors
 
 export type Theme = 'light' | 'dark' | 'auto';
 export type ThemeActionPayload = { theme: Theme }

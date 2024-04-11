@@ -1,45 +1,45 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
+import { ScrollView, Text, View, Image } from 'react-native';
+
+/** Redux Store */
+import { useSelector } from 'react-redux';
 import { Store } from '@mahjong/shared';
 const { selectors } = Store;
-import { ScrollView, Text, View, Image, Button } from 'react-native';
-import { logout, login, create } from '@mahjong/shared/store/reducers/user';
+/** End of Redux Store */
 
+// Import components
 import SecurityCard from '../../cards/settings';
 
+/**
+ * Profile view component
+ * This component will display the user's profile
+ * It will display the user's name and profile picture
+ * @returns {React.JSX.Element} The profile view component
+ */
 function ProfileView(): React.JSX.Element {
-  const dispatch = useDispatch();
   const theme = useSelector(selectors.selectTheme);
   const userData = useSelector(selectors.selectUser);
   const { styles, colors } = theme;
 
-  const handleLogout = () => {
-    if (!userData.loggedIn) {
-      dispatch(login({ email: 'test@gmail.com', password: 'testing' }));
-    } else {
-      dispatch(logout());
-    }
-  };
-  const handleCreate = () => {
-    dispatch(create({ email: 'test@gmail.com', password: 'testing' }));
-  };
-
+  const usersName = userData?.loggedIn
+    ? `${userData.firstName} ${userData.lastName ? userData.lastName : ''}`
+    : 'Name Placeholder';
   return (
     <ScrollView style={[styles.scrollContainer, styles.paddingTop]}>
       <View style={styles.column}>
-        {!!userData.image && (
+        {!!userData.image ? (
           <Image source={{ uri: userData.image }} style={[styles.largeImage]} />
+        ) : (
+          <View
+            style={[
+              styles.largeImage,
+              { borderWidth: 1, borderColor: colors.backgroundOpposite },
+            ]}
+          />
         )}
-        <Text style={[styles.large, styles.paddingTop]}>
-          {`${userData.firstName} ${
-            userData.lastName ? userData.lastName : ''
-          }`}
-        </Text>
-        <Text style={[styles.h3, { color: 'brown' }]}>{userData.rank}</Text>
+        <Text style={[styles.large, styles.paddingTop]}>{usersName}</Text>
       </View>
       <SecurityCard />
-      <Button title="Logout" onPress={handleLogout} />
-      <Button title="Create test user" onPress={handleCreate} />
     </ScrollView>
   );
 }

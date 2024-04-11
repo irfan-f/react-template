@@ -18,4 +18,6 @@ const settings = {
   }
 };
 
+export type SettingsState = typeof settings;
+
 export default settings;

@@ -9,14 +9,13 @@ import { Store } from '@mahjong/shared';
 const { selectors } = Store;
 
 const screenDimensions = Dimensions.get('window');
-const defaultInitialModalHeight = Dimensions.get('window').height * 0.4;
+const defaultInitialModalHeight = screenDimensions.height * 0.4;
 const modalHeight = new Animated.Value(defaultInitialModalHeight);
 
 const defaultMaxModalHeight = screenDimensions.height * 0.9;
 const defaultMinModalHeight = screenDimensions.height * 0.2;
 const defaultHeightIntervals =
   (defaultMaxModalHeight - defaultMinModalHeight) / 5;
-
 
 const defaultModalOptions = {
   draggableHandle: true,
@@ -25,6 +24,7 @@ const defaultModalOptions = {
   minModalHeight: defaultMinModalHeight,
   maxModalHeight: defaultMaxModalHeight,
   heightIntervals: defaultHeightIntervals,
+  tapToClose: true,
 };
 
 export type ModalOptions = {
@@ -34,10 +34,10 @@ export type ModalOptions = {
   minModalHeight?: number;
   maxModalHeight?: number;
   heightIntervals?: number;
+  tapToClose?: boolean;
 };
 
 function returnToHeight(options: ModalOptions = defaultModalOptions): void {
-
   let heightToReturnTo: number;
   if (options.snapToInitialHeight) {
     heightToReturnTo = options.initialHeight || defaultInitialModalHeight;
@@ -54,7 +54,6 @@ function returnToHeight(options: ModalOptions = defaultModalOptions): void {
   }).start();
 }
 
-
 /**
  * A modal component that can be used to display content in a modal
  * @param showModal - A boolean that determines if the modal should be displayed
@@ -65,13 +64,14 @@ function returnToHeight(options: ModalOptions = defaultModalOptions): void {
  * @param options.minModalHeight - A number that determines the minimum height of the modal, default is 20% of the screen height
  * @param options.maxModalHeight - A number that determines the maximum height of the modal, default is 90% of the screen height
  * @param options.heightIntervals - A number that determines the height intervals of the modal, default is 14% of the screen height
+ * @param options.tapToClose - A boolean that determines if the modal can be closed by tapping on the background, default is true
  * @param children - The content of the modal
  * @returns - A modal component
  */
 function ModalWrapper({
   showModal,
   setShowModal,
-  options,
+  options = defaultModalOptions,
   children,
 }: {
   showModal: boolean;
@@ -117,20 +117,13 @@ function ModalWrapper({
           .onEnd(() => {});
 
   const theme = useSelector(selectors.selectTheme);
-  const { styles, colors } = theme;
+  const { colors } = theme;
 
   return (
     <Modal
       visible={showModal}
       animationType="slide"
       presentationStyle="overFullScreen"
-      style={{
-        shadowColor: colors.backgroundOpposite,
-        shadowOffset: {
-          width: 1,
-          height: 2,
-        },
-      }}
       transparent={true}>
       {/* Handles the gesture */}
       <GestureDetector gesture={pan}>
@@ -142,6 +135,17 @@ function ModalWrapper({
             justifyContent: 'flex-end',
             alignItems: 'center',
           }}>
+          {/* The invisible portion of the modal */}
+          <View
+            style={{
+              height: screenDimensions.height - modalHeight._value,
+              width: '100%',
+              opacity: 0.5,
+            }}
+            onTouchStart={() =>
+              options?.tapToClose ? setShowModal(false) : null
+            }
+          />
           {/* The visible portion of the modal*/}
           <View
             style={{

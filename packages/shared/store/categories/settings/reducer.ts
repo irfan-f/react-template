@@ -1,6 +1,6 @@
 // settingsSlice.ts
 import { createSlice } from '@reduxjs/toolkit';
-import settings from '../../applicationInfo/settings'; // import your settings
+import settings from '../../../info/settings'; // import your settings
 
 const reducers = Object.keys(settings).reduce((acc, key) => {
   acc[`set${key.charAt(0).toUpperCase() + key.slice(1)}`] = (state, action) => {

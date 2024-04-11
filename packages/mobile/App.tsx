@@ -1,97 +1,60 @@
-import React, { Ref, useEffect } from 'react';
+import React, { Ref } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useSelector, useDispatch } from 'react-redux';
-import { Store } from '@mahjong/shared';
-import { actions as themeActions } from '@mahjong/shared/store/reducers/theme';
-import { actions as userActions } from '@mahjong/shared/store/reducers/user';
+import { SafeAreaView, StatusBar, useColorScheme, View } from 'react-native';
 
-import {
-  Modal,
-  SafeAreaView,
-  StatusBar,
-  useColorScheme,
-  View,
-  Button,
-} from 'react-native';
+/** Redux Store */
+import { useSelector } from 'react-redux';
+import { Store } from '@mahjong/shared';
+
+const { selectors } = Store;
+import { useThemeEffect } from '@mahjong/shared/store/categories/theme/helpers';
+/** End of Redux Store */
+
+/** Navigation */
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import Home from './components/pages/home';
-import Profile from './components/pages/profile';
-import Game from './components/pages/game';
-import Footer from './components/basic/footer';
-import LoginView from './components/views/login';
+import { mainStacksToShow, initialStack } from '@mahjong/shared/navigation';
+
 const Stack = createNativeStackNavigator();
 
-const initialStack = 'Home';
+// Import the footer component
+import Footer from './components/basic/footer';
 
-const stacks = [
-  {
-    name: 'Game',
-    component: Game,
-  },
-  {
-    name: 'Home',
-    component: Home,
-  },
-  {
-    name: 'Profile',
-    component: Profile,
-  },
-];
+// Import the main screens
+import Home from './components/pages/home';
+import Profile from './components/pages/profile';
 
-const { selectors } = Store;
+const components = {
+  home: Home,
+  profile: Profile,
+};
+/** End of Navigation */
 
+/**
+ * Main app component
+ * This component will be the main entry point for the app
+ * It will handle the navigation and the theme
+ * It will also handle the safe area insets
+ * @returns {React.JSX.Element} The main app component
+ */
 function App(): React.JSX.Element {
-  const [showLogin, setShowLogin] = React.useState(false);
-  const dispatch = useDispatch();
+  // Redux Hooks
+  const themeSelector = useSelector(selectors.selectTheme);
+
+  // Establish the safe area insets hook
   const insets = useSafeAreaInsets();
 
+  // Establish the navigation reference to be used in the footer
   const navigationRef: Ref<typeof NavigationContainer | null> =
     React.useRef(null);
 
+  // Establish the color scheme hook
   const colorScheme = useColorScheme();
-  const settingsSelector = useSelector(selectors.selectSettings);
-  const themeSelector = useSelector(selectors.selectTheme);
-  const userSelector = useSelector(selectors.selectUser);
-  useEffect(() => {
-    if (userSelector.loggedIn) {
-      setShowLogin(false);
-    } else {
-      // setShowLogin(true);
-    }
-  }, [userSelector.loggedIn]);
+  useThemeEffect(colorScheme);
 
-  const colors = themeSelector.colors;
-  const styles = themeSelector.styles;
-  // This use effect will trigger when the color scheme changes or the theme is changed through the settings
-  // It will dispatch an action if the theme is different from the current theme
-  useEffect(() => {
-    const currentTheme = themeSelector.theme;
-    const futureTheme =
-      settingsSelector.appearance.value.value === 'auto'
-        ? colorScheme
-        : settingsSelector.appearance.value.value;
-    if (currentTheme !== futureTheme) {
-      dispatch(themeActions.setTheme({ theme: futureTheme }));
-    }
-  }, [
-    settingsSelector.appearance.value,
-    colorScheme,
-    dispatch,
-    themeSelector.theme,
-  ]);
-  useEffect(() => {
-    const currentPrimary = themeSelector.colors.primary;
-    const futurePrimary = settingsSelector.theme.value.value;
-    if (currentPrimary !== futurePrimary) {
-      dispatch(themeActions.setColor({ primary: futurePrimary }));
-    }
-  }, [
-    settingsSelector.theme.value.value,
-    dispatch,
-    themeSelector.colors.primary,
-  ]);
+  // Get the colors and styles from the theme selector
+  const { colors, styles } = themeSelector;
 
   return (
     <>
@@ -106,12 +69,12 @@ function App(): React.JSX.Element {
           <NavigationContainer ref={navigationRef}>
             <Stack.Navigator initialRouteName={initialStack}>
               {/* Loop through the stacks and create a screen for each stack */}
-              {stacks.map(stack => {
+              {mainStacksToShow.map(stack => {
                 return (
                   <Stack.Screen
-                    key={stack.name}
+                    key={stack.id}
                     name={stack.name}
-                    component={stack.component}
+                    component={components[stack.id]}
                     options={{ headerShown: false }}
                   />
                 );
@@ -121,13 +84,10 @@ function App(): React.JSX.Element {
         </View>
         <Footer
           navigationRef={navigationRef}
-          stacks={stacks}
+          stacks={mainStacksToShow}
           initialStack={initialStack}
         />
       </SafeAreaView>
-      <Modal visible={showLogin} presentationStyle="fullScreen">
-        <LoginView />
-      </Modal>
     </>
   );
 }

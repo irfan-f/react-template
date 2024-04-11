@@ -5,8 +5,13 @@ const { selectors } = Store;
 import Card from '../../basic/card';
 import List from '../../basic/list';
 
-import { actions } from '@mahjong/shared/store/reducers/settings';
+import { actions } from '@mahjong/shared/store/categories/settings/reducer';
 
+/**
+ * Security card component
+ * This component will display security settings
+ * @returns {React.JSX.Element} The security card component
+ */
 function SecurityCard(): React.JSX.Element {
   const dispatch = useDispatch();
   const settings = useSelector(selectors.selectSettings);

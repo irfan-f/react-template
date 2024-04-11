@@ -1,8 +1,8 @@
 // reducers.ts
 import { combineReducers } from '@reduxjs/toolkit';
-import settingsReducer from './settings';
-import themeReducer from './theme';
-import userReducer from './user';
+import settingsReducer from '../categories/settings/reducer';
+import themeReducer from '../categories/theme/reducer';
+import userReducer from '../categories/user/reducer';
 
 const rootReducer = combineReducers({
   settings: settingsReducer,

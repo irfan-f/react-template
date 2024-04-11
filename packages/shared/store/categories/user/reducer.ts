@@ -1,18 +1,5 @@
 // userSlice.ts
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { authorization } from '../../firebase'
-
-// interface UserState {
-//   theme: Theme;
-//   colors: Colors; // Colors is imported from your existing file
-//   styles: Styles; // Styles is imported from your existing file
-// }
-
-// const initialState: UserState = {
-//   theme: Appearance.getColorScheme() || 'light',
-//   colors: defaultColors, // Initialize with default colors
-//   styles: defaultStyles, // Initialize with default styles
-// };
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 const defaultState = {
   loggedIn: false,
@@ -61,7 +48,6 @@ const userSlice = createSlice({
 });
 
 export const login = createAsyncThunk('user/login', async (payload: { email: string; password: string }) => {
-  const user = await authorization.login(payload.email, payload.password);
   return {
     userName: payload.email,
     firstName: '',
@@ -78,13 +64,11 @@ export const login = createAsyncThunk('user/login', async (payload: { email: str
 
 export const logout = createAsyncThunk('user/logout', async () => {
   // Implement your API call here
-  await authorization.logout();
   return true;
 });
 
 export const create = createAsyncThunk('user/create', async (payload: { email: string; password: string }) => {
   // Implement your API call here
-  const user = await authorization.createUser(payload.email, payload.password);
   return {
     userName: payload.email,
     firstName: '',
